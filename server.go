@@ -3,87 +3,64 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
+	"github.com/appleboy/gin-jwt"
 	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/internal_services"
 	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/external_services"
 	"os"
+	"time"
+	"github.com/Javier-Caballero-Info/personal_page_storage_golang/controllers"
 )
-
 
 func main() {
 	r := gin.Default()
+	r.Use(gin.Logger())
 
 	s3Service := external_services.NewS3Service(os.Getenv("AWS_BASE_PATH"))
 
 	fileService := internal_services.FileService{S3Service: s3Service, BasePath: os.Getenv("AWS_BASE_PATH")}
 
-	r.GET("/*directory", func(c *gin.Context) {
-		directory := c.Param("directory")
+	fileController := controllers.NewFileController(fileService)
 
-		filesList := fileService.GetAllFiles(directory)
+	jwtSecret := os.Getenv("JWT_SECRET")
 
-		c.JSON(200, gin.H{
-			"directory": directory,
-			"files":     filesList,
-		})
-
-	})
-
-	r.POST("/*directory", func(c *gin.Context) {
-
-		r := c.Request
-
-		directory := c.Param("directory")
-
-		r.ParseMultipartForm(32 << 20)
-
-		file, handler, err := r.FormFile("upload")
-
-		if err != nil {
-			c.JSON(400, gin.H{
-				"message": err.Error(),
+	// the jwt middleware
+	authMiddleware := &jwt.GinJWTMiddleware{
+		Realm:      "JavierCaballeroInfoStorage",
+		Key:        []byte(jwtSecret),
+		SigningAlgorithm: "HS384",
+		Authorizator: func(user interface{}, c *gin.Context) bool {
+			return true
+		},
+		Unauthorized: func(c *gin.Context, code int, message string) {
+			c.JSON(code, gin.H{
+				"code":    code,
+				"message": message,
 			})
-			return
-		}
+		},
+		TokenLookup: "header:Authorization",
+		TokenHeadName: "Bearer",
+		TimeFunc: time.Now,
+	}
 
-		result, err := fileService.UploadFile(directory, handler.Filename, file)
+	auth := r.Group("/")
 
-		if err != nil {
-			c.JSON(500, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
+	auth.Use(authMiddleware.MiddlewareFunc())
+	{
+		auth.GET("/*directory", fileController.GetAll)
 
-		c.JSON(201, result)
-	})
+		auth.POST("/*directory", fileController.Post)
 
+		auth.DELETE("/*filePath", fileController.Delete)
+	}
 
-	r.DELETE("/*filePath", func(c *gin.Context) {
-
-		filePath := c.Param("filePath")
-
-		err := fileService.DeleteFile(filePath)
-
-		if err != nil {
-			c.JSON(404, gin.H{
-				"message": "Unable to delete " + filePath,
-				"detail": err.Error(),
-			})
-			return
-		}
-
-		c.JSON(204, gin.H{})
-
-	})
+	// Allow all CORS
+	r.Use(cors.Default())
 
 	port := "3000"
 
 	if os.Getenv("PORT") != "" {
 		port = os.Getenv("PORT")
 	}
-
-	// Allow all CORS
-	r.Use(cors.Default())
 
 	r.Run("0.0.0.0:" + port)
 }

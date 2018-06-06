@@ -37,7 +37,7 @@ func NewS3Service(basePath string) S3Service {
 
 	s3Service.bucket = os.Getenv("AWS_BUCKET")
 
-	s3Service.basePath = os.Getenv("AWS_BASE_PATH")
+	s3Service.basePath = basePath
 
 	s3Service.sessionS3, err = session.NewSession(&aws.Config{
 		Region:      aws.String(s3Service.region),
