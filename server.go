@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/internal_services"
 	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/external_services"
 	"os"
@@ -80,6 +81,9 @@ func main() {
 	if os.Getenv("PORT") != "" {
 		port = os.Getenv("PORT")
 	}
+
+	// Allow all CORS
+	r.Use(cors.Default())
 
 	r.Run("0.0.0.0:" + port)
 }
