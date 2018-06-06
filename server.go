@@ -21,7 +21,7 @@ func main() {
 
 	fileController := controllers.NewFileController(fileService)
 
-	jwtSecret := os.Getenv("JWT_SECRET")
+	jwtSecret := os.Getenv("JWT_SECRET_KEY")
 
 	// the jwt middleware
 	authMiddleware := &jwt.GinJWTMiddleware{
