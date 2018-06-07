@@ -109,6 +109,7 @@ Export the following environment variables:
 
 ```bash
 PORT=3000
+JWT_SIGN_ALGORITHM=HS256 # Signature to validate the JWT token
 JWT_SECRET_KEY=secret # Secret key for jwt
 
 # Firebase Credentials
@@ -152,11 +153,12 @@ docker build -t personal_page_storage_golang .
 ```bash
 docker run -p 3000:3000 -d \
 -e JWT_SECRET_KEY="jwt-secret-string" \
--e DATABASE_URL="db.firebase.com" \
--e DB_PRIVATE_KEY_ID="secret_id" \
--e DB_PRIVATE_KEY="secret" \
--e DB_CLIENT_EMAIL="email@firebase.com" \
--e DB_CLIENT_ID="some_client_id" \
+-e JWT_SIGN_ALGORITHM="db.firebase.com" \
+-e AWS_REGION="us-east-1" \
+-e AWS_BUCKET="bucket_name" \
+-e AWS_BASE_PATH="secret" \
+-e AWS_ACCESS_KEY_ID="key_abc123" \
+-e AWS_SECRET_ACCESS_KEY="secret_abc123" \
 personal_page_storage_golang
 ```
 ## Contributing

@@ -27,7 +27,7 @@ func main() {
 	authMiddleware := &jwt.GinJWTMiddleware{
 		Realm:      "JavierCaballeroInfoStorage",
 		Key:        []byte(jwtSecret),
-		SigningAlgorithm: "HS384",
+		SigningAlgorithm: os.Getenv("JWT_SIGN_ALGORITHM"),
 		Authorizator: func(user interface{}, c *gin.Context) bool {
 			return true
 		},
