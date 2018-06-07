@@ -92,7 +92,7 @@ func (fileService FileService) UploadFile(directory string, filename string, fil
 
 	directory += fileService.BasePath
 
-	err := fileService.S3Service.UploadFile(directory + filename, file)
+	err := fileService.S3Service.UploadFile(directory + "/" + filename, file)
 
 	var item map[string]string
 
