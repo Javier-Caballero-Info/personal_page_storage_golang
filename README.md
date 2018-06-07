@@ -1,6 +1,6 @@
 # Personal Page Storage - GoLang
 
-> Short description
+> Golang Api service made with Gin Gonic framework and connecto to Amazon S3 service
 
 ## Table of Contents
 
@@ -9,10 +9,7 @@
 -   [Clone](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master/README.md#clone)
 - [Requirements](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#requirements)
 - [Installation](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#installation)
-	- [Pyhton 3](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#pyhton-3)
-	- [Virtual environments - pyenv (Linux/MacOS)](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#virtual-environments---pyenv-linuxmacos)
-	- [Creation of virtualenv (Linux/Mac)](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#creation-of-virtualenv-linuxmac)
-	- [Dependencies (All)](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#dependencies-all)
+	- [GoLang](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#golang)
 - [Environment](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#environment)
 - [Developing](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#developing)
 - [Test](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#test)
@@ -26,7 +23,12 @@
 
 ## Overview
 
-Long Description
+This is a simple API to list, upload (create and update), and delete all types of files in AWS S3 service.
+The service is very transparent, with littles setting could be connect to another object storage.
+
+The response elements are maded thinking in the availability of get the download link easily.
+
+This app validate the authorization token provide in Authorization header.
 
 ## API Description
 
