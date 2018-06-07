@@ -42,34 +42,37 @@ func (fileService *FileService) GetAllFiles(directory string) []map[string]strin
 			sl := strings.Split(fileName, "/")
 
 			name := sl[len(sl)-1]
+			if name != "" {
+				if len(directory) > 2 {
+					if len(strings.Split(fileName[len(directory)-1:], "/")) < 3  && fileName != directory {
 
-			if len(directory) > 2 {
-				if len(strings.Split(fileName[len(directory)-1:], "/")) < 3  && fileName != directory {
+						item := map[string]string{
+							"name": name,
+							"path": fileName,
+							"url": fileService.S3Service.GetFileUrl(fileName),
+						}
 
-					item := map[string]string{
-						"name": name,
-						"path": fileName,
-						"url": fileService.S3Service.GetFileUrl(fileName),
+						filesList = append(filesList, item)
 					}
+				}else{
+					if len(strings.Split(fileName, "/")) < 2 {
 
-					filesList = append(filesList, item)
-				}
-			}else{
-				if len(strings.Split(fileName, "/")) < 2 {
+						item := map[string]string{
+							"name": name,
+							"path": fileName,
+							"url": fileService.S3Service.GetFileUrl(fileName),
+						}
 
-					item := map[string]string{
-						"name": name,
-						"path": fileName,
-						"url": fileService.S3Service.GetFileUrl(fileName),
+						filesList = append(filesList, item)
 					}
-
-					filesList = append(filesList, item)
 				}
 			}
 
 		}
 
-	} else {
+	}
+
+	if filesList == nil {
 		filesList = []map[string]string{}
 	}
 
