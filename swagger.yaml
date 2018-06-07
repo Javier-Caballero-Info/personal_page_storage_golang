@@ -1,120 +1,119 @@
 swagger: '2.0'
 info:
   version: '1.0'
-  title: "personalpagestoragegolang"
-  description: Polls is a simple API allowing consumers to view polls and vote in them.
-  license:
-    name: MIT
-    url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
-host: polls.apiblueprint.org
+  title: "Personal Page Storage - GoLang"
+  description: This is a simple API to list, upload (create and update), and delete all types of files in AWS S3 service. The service is very transparent, with littles setting could be connect to another object storage.
+host: storage.javiercaballero.info
 basePath: /
 schemes:
-- http
-consumes:
-- application/json
+- https
 produces:
 - application/json
+tags:
+- name: "Files"
 paths:
-  /questions:
-    x-summary: Questions Collection
+  /{directory}:
     get:
-      summary: List All Questions
+      summary: List All filles in directory
+      tags:
+      - "Files"
+      security:
+      - Bearer: []
+      consumes:
+      - application/json
+      parameters:
+        - name: "directory"
+          description: "Directory to list the files"
+          in: "path"
+          required: true
+          type: "string"
       responses:
         200:
           description: Successful Response
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Question'
+            $ref: '#/definitions/FileList'
           examples:
             application/json:
-              - question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 2048
-                  - choice: Python
-                    votes: 1024
-                  - choice: Objective-C
-                    votes: 512
-                  - choice: Ruby
-                    votes: 256
+              directory: "/"
+              files:
+              - name: "picture1.png"
+                path: "directory/picture1.png"
+                url: "https://s3.amazonaws.com/bucket/directory/picture1.png"
+              - name: "picture2.png"
+                path: "directory/picture2.png"
+                url: "https://s3.amazonaws.com/bucket/directory/picture2.png"
     post:
-      description: >-
-        You may create your own question using this action. It takes a JSON
-        object containing a question and a collection of answers in the
-        form of choices.
-      summary: Create a New Question
+      tags:
+      - "Files"
+      security:
+      - Bearer: []
+      summary: Upload a new file
+      consumes:
+        - multipart/form-data
       parameters:
-        - name: body
-          in: body
+        - name: "directory"
+          description: "Directory to place the file"
+          in: "path"
           required: true
-          schema:
-            $ref: '#/definitions/QuestionRequest'
+          type: string
+        - name: "upload"
+          description: "File to upload"
+          in: formData
+          required: true
+          type: file
       responses:
         201:
           description: ''
           schema:
-            $ref: '#/definitions/Question'
+            $ref: '#/definitions/File'
           examples:
             application/json:
-                question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 0
-                  - choice: Python
-                    votes: 0
-                  - choice: Objective-C
-                    votes: 0
-                  - choice: Ruby
-                    votes: 0
+              name: "picture.png"
+              path: "directory/picture.png"
+              url: "https://s3.amazonaws.com/bucket/directory/picture.png"
+  /{file_path}:
+    delete:
+      summary: Delete a file
+      tags:
+      - "Files"
+      security:
+      - Bearer: []
+      consumes:
+      - application/json
+      parameters:
+        - name: "file_path"
+          description: "Path of the file to remove"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        204:
+          description: Successful Response
 definitions:
-  Question:
-    title: Question
+  FileList:
+    title: FileList
     type: object
     properties:
-      question:
+      directory:
         type: string
-      published_at:
-        type: string
-      choices:
+      files:
         type: array
         items:
-          $ref: '#/definitions/Choice'
+          $ref: '#/definitions/File'
     required:
-      - question
-      - published_at
-      - choices
-  Choice:
-    title: Choice
+      - directory
+      - files
+  File:
+    title: File
     type: object
     properties:
-      votes:
-        type: integer
-        format: int32
-      choice:
+      "name":
+        type: string
+      "path":
+        type: string
+      "url":
         type: string
     required:
-      - votes
-      - choice
-  QuestionRequest:
-    title: Question Request
-    type: object
-    properties:
-      question:
-        type: string
-      choices:
-        type: array
-        items:
-          type: string
-    required:
-      - question
-      - choices
-    example:
-      question: Favourite programming language?
-      choices:
-        - Swift
-        - Python
-        - Objective-C
-        - Ruby
+      - name
+      - path
+      - url
