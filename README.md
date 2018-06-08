@@ -153,7 +153,7 @@ docker build -t personal_page_storage_golang .
 ```bash
 docker run -p 3000:3000 -d \
 -e JWT_SECRET_KEY="jwt-secret-string" \
--e JWT_SIGN_ALGORITHM="db.firebase.com" \
+-e JWT_SIGN_ALGORITHM="HS256" \
 -e AWS_REGION="us-east-1" \
 -e AWS_BUCKET="bucket_name" \
 -e AWS_BASE_PATH="secret" \
