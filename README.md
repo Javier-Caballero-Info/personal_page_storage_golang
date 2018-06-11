@@ -4,22 +4,22 @@
 
 ## Table of Contents
 
--   [Overview](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master/README.md#overview)
--   [API Description](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master/README.md#api_description)
--   [Clone](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master/README.md#clone)
-- [Requirements](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#requirements)
-- [Installation](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#installation)
-	- [GoLang](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#golang)
-- [Environment](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#environment)
-- [Developing](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#developing)
-- [Test](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#test)
-- [Build](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#build)
-- [Running with Docker](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#running-with-docker)
-	- [Building the image](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#building-the-image)
-	- [Starting up a container](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#starting-up-a-container)
-- [Contributing](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#contributing)
-- [Author](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#author)
-- [License](https://github.com/Javier-Caballero-Info/personal_page_storage_golangtree/master#license)
+-   [Overview](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master/README.md#overview)
+-   [API Description](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master/README.md#api_description)
+-   [Clone](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master/README.md#clone)
+- [Requirements](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#requirements)
+- [Installation](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#installation)
+	- [GoLang](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#golang)
+- [Environment](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#environment)
+- [Developing](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#developing)
+- [Test](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#test)
+- [Build](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#build)
+- [Running with Docker](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#running-with-docker)
+	- [Building the image](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#building-the-image)
+	- [Starting up a container](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#starting-up-a-container)
+- [Contributing](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#contributing)
+- [Author](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#author)
+- [License](https://github.com/Javier-Caballero-Info/personal_page_storage_golang/tree/master#license)
 
 ## Overview
 
