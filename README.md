@@ -112,7 +112,7 @@ PORT=3000
 JWT_SIGN_ALGORITHM=HS256 # Signature to validate the JWT token
 JWT_SECRET_KEY=secret # Secret key for jwt
 
-# Firebase Credentials
+# AWS Credentials
 AWS_REGION=us-east-1 # S3 region for the bucket
 AWS_BUCKET=bucket_name # S3 bucket
 AWS_BASE_PATH=secret # Path for subfolder inner the bucket, leave empty for root

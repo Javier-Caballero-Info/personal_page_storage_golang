@@ -54,7 +54,9 @@ func main() {
 	}
 
 	// Allow all CORS
-	r.Use(cors.Default())
+	r.Use(cors.New(cors.Config{
+		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type"},
+	}))
 
 	port := "3000"
 
