@@ -103,7 +103,7 @@ func (fileService FileService) UploadFile(directory string, filename string, fil
 
 		item = map[string]string{
 			"name": filename,
-			"path": directory + filename,
+			"path": directory + "/" + filename,
 			"url":  fileService.S3Service.GetFileUrl(directory + filename),
 		}
 
