@@ -2,36 +2,35 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-		"github.com/appleboy/gin-jwt"
+	"github.com/appleboy/gin-jwt"
 	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/internal_services"
 	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/external_services"
 	"os"
 	"time"
 	"github.com/Javier-Caballero-Info/personal_page_storage_golang/controllers"
-	"fmt"
 )
 
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		c.Writer.Header().Set("Content-Type", "application/json")
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Access-Control-Allow-Origin")
-		c.Writer.Header().Set("Access-Control-Expose-Headers", "Content-Length")
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Access-Control-Allow-Origin")
 		if c.Request.Method == "OPTIONS" {
-			fmt.Println("OPTIONS")
 			c.AbortWithStatus(200)
-		} else {
-			c.Next()
 		}
 	}
 }
 
 func main() {
 	r := gin.Default()
+
 	r.Use(gin.Logger())
+
+	r.Use(CORSMiddleware())
+
+	r.OPTIONS("/*path", CORSMiddleware())
 
 	s3Service := external_services.NewS3Service(os.Getenv("AWS_BASE_PATH"))
 
@@ -70,9 +69,6 @@ func main() {
 
 		auth.DELETE("/*filePath", fileController.Delete)
 	}
-
-	// Allow all CORS
-	r.Use(CORSMiddleware())
 
 	port := "3000"
 
