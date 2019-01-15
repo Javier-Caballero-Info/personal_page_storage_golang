@@ -17,6 +17,7 @@ func ValidateJWT()  gin.HandlerFunc {
 		jwtSecret := os.Getenv("JWT_SECRET_KEY")
 
 		auth := c.GetHeader("Authorization")
+
 		if auth != "" {
 			tokens := strings.Fields(auth)
 			if len(tokens) == 2 && tokens[0] == "Bearer"{
@@ -26,14 +27,19 @@ func ValidateJWT()  gin.HandlerFunc {
 
 				if err == nil && token.Valid {
 					c.Next()
+				} else {
+					c.AbortWithStatusJSON(401, gin.H{
+						"code":    401,
+						"message": "Unauthorized",
+					})
 				}
 			}
+		} else {
+			c.AbortWithStatusJSON(401, gin.H{
+				"code":    401,
+				"message": "Unauthorized",
+			})
 		}
-
-		c.AbortWithStatusJSON(401, gin.H{
-			"code":    401,
-			"message": "Unauthorized",
-		})
 
 	}
 }
