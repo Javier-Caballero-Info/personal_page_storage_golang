@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/internal_services"
+	"github.com/gin-gonic/gin"
 )
 
 type FileController struct {

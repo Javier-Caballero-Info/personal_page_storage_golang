@@ -1,14 +1,43 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/appleboy/gin-jwt"
-	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/internal_services"
-	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/external_services"
-	"os"
-	"time"
 	"github.com/Javier-Caballero-Info/personal_page_storage_golang/controllers"
+	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/external_services"
+	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/internal_services"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
+	"os"
+	"strings"
 )
+
+// middleware to protect private pages
+func ValidateJWT()  gin.HandlerFunc {
+	return func (c *gin.Context) {
+		// middleware
+		jwtSecret := os.Getenv("JWT_SECRET_KEY")
+
+		auth := c.GetHeader("Authorization")
+		if auth != "" {
+			tokens := strings.Fields(auth)
+			if len(tokens) == 2 && tokens[0] == "Bearer"{
+				token, err := jwt.Parse(tokens[1], func(token *jwt.Token) (interface{}, error) {
+					return []byte(jwtSecret), nil
+				})
+
+				if err == nil && token.Valid {
+					c.Next()
+				}
+			}
+		}
+
+		c.AbortWithStatusJSON(401, gin.H{
+			"code":    401,
+			"message": "Unauthorized",
+		})
+
+	}
+}
+
 
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -38,30 +67,9 @@ func main() {
 
 	fileController := controllers.NewFileController(fileService)
 
-	jwtSecret := os.Getenv("JWT_SECRET_KEY")
-
-	// the jwt middleware
-	authMiddleware := &jwt.GinJWTMiddleware{
-		Realm:      "JavierCaballeroInfoStorage",
-		Key:        []byte(jwtSecret),
-		SigningAlgorithm: os.Getenv("JWT_SIGN_ALGORITHM"),
-		Authorizator: func(user interface{}, c *gin.Context) bool {
-			return true
-		},
-		Unauthorized: func(c *gin.Context, code int, message string) {
-			c.JSON(code, gin.H{
-				"code":    code,
-				"message": message,
-			})
-		},
-		TokenLookup: "header:Authorization",
-		TokenHeadName: "Bearer",
-		TimeFunc: time.Now,
-	}
-
 	auth := r.Group("/")
 
-	auth.Use(authMiddleware.MiddlewareFunc())
+	auth.Use(ValidateJWT())
 	{
 		auth.GET("/*directory", fileController.GetAll)
 

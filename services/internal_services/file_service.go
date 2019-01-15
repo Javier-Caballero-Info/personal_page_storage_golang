@@ -1,9 +1,9 @@
 package internal_services
 
 import (
-	"strings"
 	"github.com/Javier-Caballero-Info/personal_page_storage_golang/services/external_services"
 	"io"
+	"strings"
 )
 
 type FileService struct {
@@ -18,18 +18,14 @@ func (fileService *FileService) GetAllFiles(directory string) []map[string]strin
 	var filesList []map[string]string
 
 	if len(directory) > 1 {
-
-		directory = directory[1:]
-
 		if string(directory[len(directory)-1]) != "/" {
 			directory += "/"
 		}
-
 	} else {
-		directory = ""
+		directory = "/"
 	}
 
-	directory += fileService.BasePath
+	directory = fileService.BasePath + directory
 
 	files, err := fileService.S3Service.ListFiles(directory)
 
@@ -83,17 +79,14 @@ func (fileService *FileService) GetAllFiles(directory string) []map[string]strin
 func (fileService FileService) UploadFile(directory string, filename string, file io.Reader) (map[string]string, error){
 
 	if len(directory) > 1 {
-
-		directory = directory[1:]
-
 		if string(directory[len(directory)-1]) != "/" {
 			directory += "/"
 		}
 	} else {
-		directory = ""
+		directory = "/"
 	}
 
-	directory += fileService.BasePath
+	directory = fileService.BasePath + directory
 
 	err := fileService.S3Service.UploadFile(directory + "/" + filename, file)
 
